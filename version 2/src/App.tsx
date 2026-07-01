@@ -76,6 +76,8 @@ function App() {
         });
     };
 
+    const [isGuest, setIsGuest] = useState(false);
+
     if (isLoading) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: 'var(--bg-color)' }}>
@@ -88,7 +90,7 @@ function App() {
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <TopNav onAddSymbol={handleAddSymbol} theme={theme} onToggleTheme={toggleTheme} />
             
-            {!user && <LoginModal />}
+            {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
 
             <div style={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
                 <Sidebar 
