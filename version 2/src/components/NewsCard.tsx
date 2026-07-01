@@ -45,6 +45,9 @@ function NewsCard({ article, defaultExpanded }: { article: NewsArticle, defaultE
 
     return (
         <div className={`news-item ${expanded ? 'expanded' : ''}`} onClick={() => setExpanded(!expanded)}>
+            <div className="news-source">
+                <strong>{article.source.toUpperCase()}</strong> <span style={{ opacity: 0.5 }}>{timeStr}</span>
+            </div>
             <div className="news-header">
                 <div className="news-title-area">
                     <h3 className="news-headline">{article.headline}</h3>
@@ -53,7 +56,6 @@ function NewsCard({ article, defaultExpanded }: { article: NewsArticle, defaultE
                     <ChevronDown size={20} />
                 </button>
             </div>
-            <div className="news-source">• {timeStr} &nbsp; 🌐 {article.source}</div>
             <div className="news-body">
                 {article.summary} <br/><br/>
                 <a href={article.url} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
