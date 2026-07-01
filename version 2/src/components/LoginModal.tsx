@@ -10,6 +10,7 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
   const [view, setView] = useState<'options' | 'login' | 'signup'>('options');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,9 +24,14 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       } else {
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            setLoading(false);
+            return;
+        }
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        setError('Signup successful! You can now log in.');
+        setError('Registration successful! Please check your email to verify your account before logging in.');
         setView('login');
       }
     } catch (err: any) {
@@ -195,6 +201,32 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
                   onBlur={(e) => e.target.style.borderColor = 'var(--border-light)'}
                 />
               </div>
+              
+              {view === 'signup' && (
+                <div>
+                  <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '8px', fontSize: '14px' }}>
+                    CONFIRM PASSWORD
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      backgroundColor: 'var(--bg-color)',
+                      border: '1px solid var(--border-light)',
+                      borderRadius: '4px',
+                      color: 'var(--text-primary)',
+                      fontSize: '16px',
+                      outline: 'none',
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
+                    onBlur={(e) => e.target.style.borderColor = 'var(--border-light)'}
+                  />
+                </div>
+              )}
               
               <button
                 type="submit"
