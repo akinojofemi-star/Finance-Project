@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { getHistory } from '../services/api';
 
 const RANGES = ['1D', '1W', '1M', 'YTD', '1Y', 'ALL'];
@@ -12,6 +12,7 @@ export function StockChart({ symbol }: StockChartProps) {
     const [range, setRange] = useState('1Y');
     const [chartData, setChartData] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [showSMA, setShowSMA] = useState(false);
 
     useEffect(() => {
         if (!symbol) return;
@@ -31,7 +32,19 @@ export function StockChart({ symbol }: StockChartProps) {
                         price: data.closes[i]
                     };
                 });
-                setChartData(formatted);
+
+                // Calculate 20-period Simple Moving Average
+                const period = 20;
+                const withSMA = formatted.map((dataPoint, i, arr) => {
+                    if (i < period - 1) return { ...dataPoint, sma: null };
+                    let sum = 0;
+                    for (let j = 0; j < period; j++) {
+                        sum += arr[i - j].price;
+                    }
+                    return { ...dataPoint, sma: sum / period };
+                });
+
+                setChartData(withSMA);
             } else {
                 setChartData([]);
             }
@@ -50,7 +63,18 @@ export function StockChart({ symbol }: StockChartProps) {
     return (
         <div className="chart-container" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '24px', marginBottom: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <h3 style={{ margin: 0, fontSize: '18px' }}>Price History</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <h3 style={{ margin: 0, fontSize: '18px' }}>Price History</h3>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                        <input 
+                            type="checkbox" 
+                            checked={showSMA}
+                            onChange={(e) => setShowSMA(e.target.checked)}
+                            style={{ accentColor: 'var(--accent)' }}
+                        />
+                        Show 20-Period SMA
+                    </label>
+                </div>
                 <div style={{ display: 'flex', gap: '8px' }}>
                     {RANGES.map(r => (
                         <button 
@@ -105,6 +129,16 @@ export function StockChart({ symbol }: StockChartProps) {
                                 itemStyle={{ color: '#fff' }}
                             />
                             <Area type="monotone" dataKey="price" stroke={color} fillOpacity={1} fill="url(#colorPrice)" strokeWidth={2} />
+                            {showSMA && (
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="sma" 
+                                    stroke="var(--accent)" 
+                                    strokeWidth={2} 
+                                    dot={false} 
+                                    name="SMA (20)"
+                                />
+                            )}
                         </AreaChart>
                     </ResponsiveContainer>
                 ) : (

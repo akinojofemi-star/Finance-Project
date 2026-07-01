@@ -3,6 +3,8 @@ import './App.css';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
 import { Dashboard } from './components/Dashboard';
+import { PortfolioView } from './components/PortfolioView';
+import { SettingsView } from './components/SettingsView';
 import { LoginModal } from './components/LoginModal';
 import { useAuth } from './contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
@@ -126,6 +128,7 @@ function App() {
     };
 
     const [isGuest, setIsGuest] = useState(false);
+    const [currentView, setCurrentView] = useState<'dashboard' | 'portfolio' | 'settings'>('dashboard');
 
     if (isLoading) {
         return (
@@ -137,7 +140,14 @@ function App() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <TopNav onAddSymbol={handleAddSymbol} theme={theme} onToggleTheme={toggleTheme} portfolioBalance={portfolioBalance} />
+            <TopNav 
+                onAddSymbol={handleAddSymbol} 
+                theme={theme} 
+                onToggleTheme={toggleTheme} 
+                portfolioBalance={portfolioBalance} 
+                currentView={currentView}
+                onNavigate={setCurrentView}
+            />
             
             {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
 
@@ -149,14 +159,24 @@ function App() {
                     onSelectTicker={handleSelectTicker}
                 />
                 
-                <Dashboard 
-                    watchlist={state.watchlist}
-                    companyNames={state.companyNames}
-                    activeTicker={state.activeTicker}
-                    onSelectTicker={handleSelectTicker}
-                    portfolioBalance={portfolioBalance}
-                    onBalanceChange={setPortfolioBalance}
-                />
+                {currentView === 'dashboard' && (
+                    <Dashboard 
+                        watchlist={state.watchlist}
+                        companyNames={state.companyNames}
+                        activeTicker={state.activeTicker}
+                        onSelectTicker={handleSelectTicker}
+                        portfolioBalance={portfolioBalance}
+                        onBalanceChange={setPortfolioBalance}
+                    />
+                )}
+
+                {currentView === 'portfolio' && (
+                    <PortfolioView portfolioBalance={portfolioBalance} />
+                )}
+
+                {currentView === 'settings' && (
+                    <SettingsView theme={theme} onToggleTheme={toggleTheme} />
+                )}
             </div>
         </div>
     );

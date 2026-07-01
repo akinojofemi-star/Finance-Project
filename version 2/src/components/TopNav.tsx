@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { searchSymbol } from '../services/api';
-import { Search, Loader2, Sun, Moon, LogOut } from 'lucide-react';
+import { searchSymbol } from '../services/api';
+import { Search, Loader2, Sun, Moon, LogOut, LayoutDashboard, Briefcase, Settings } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface TopNavProps {
@@ -8,9 +9,11 @@ interface TopNavProps {
     theme: 'dark' | 'light';
     onToggleTheme: () => void;
     portfolioBalance?: number | null;
+    currentView?: 'dashboard' | 'portfolio' | 'settings';
+    onNavigate?: (view: 'dashboard' | 'portfolio' | 'settings') => void;
 }
 
-export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance }: TopNavProps) {
+export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, currentView = 'dashboard', onNavigate }: TopNavProps) {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const { user, signOut } = useAuth();
@@ -32,8 +35,37 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance }: 
 
     return (
         <header className="top-nav">
-            <div className="logo-area">
+            <div className="logo-area" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
                 <span className="logo-text">SYNAPSE FINANCE</span>
+                
+                {onNavigate && user && (
+                    <nav style={{ display: 'flex', gap: '8px' }}>
+                        <button 
+                            onClick={() => onNavigate('dashboard')}
+                            style={{
+                                display: 'flex', alignItems: 'center', gap: '6px',
+                                padding: '6px 12px', background: currentView === 'dashboard' ? 'var(--card-bg)' : 'transparent',
+                                border: '1px solid', borderColor: currentView === 'dashboard' ? 'var(--border-light)' : 'transparent',
+                                borderRadius: '4px', color: currentView === 'dashboard' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                cursor: 'pointer', fontSize: '13px', fontWeight: 500
+                            }}
+                        >
+                            <LayoutDashboard size={14} /> Research
+                        </button>
+                        <button 
+                            onClick={() => onNavigate('portfolio')}
+                            style={{
+                                display: 'flex', alignItems: 'center', gap: '6px',
+                                padding: '6px 12px', background: currentView === 'portfolio' ? 'var(--card-bg)' : 'transparent',
+                                border: '1px solid', borderColor: currentView === 'portfolio' ? 'var(--border-light)' : 'transparent',
+                                borderRadius: '4px', color: currentView === 'portfolio' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                cursor: 'pointer', fontSize: '13px', fontWeight: 500
+                            }}
+                        >
+                            <Briefcase size={14} /> Portfolio
+                        </button>
+                    </nav>
+                )}
             </div>
             <div className="search-area">
                 <div className="search-box">
@@ -67,6 +99,11 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance }: 
                         <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                             {user.email}
                         </span>
+                        {onNavigate && (
+                            <button className="icon-btn" onClick={() => onNavigate('settings')} title="Settings" style={{ color: currentView === 'settings' ? 'var(--accent)' : 'var(--text-primary)' }}>
+                                <Settings size={20} />
+                            </button>
+                        )}
                         <button className="icon-btn" onClick={signOut} title="Sign Out" style={{ color: 'var(--negative)' }}>
                             <LogOut size={20} />
                         </button>
