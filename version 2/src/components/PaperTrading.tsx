@@ -147,8 +147,8 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
                 </div>
             )}
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}>
-                <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '120px' }}>
                     <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '6px' }}>Quantity</label>
                     <input 
                         type="number" 

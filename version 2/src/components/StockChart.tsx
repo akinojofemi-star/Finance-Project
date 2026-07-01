@@ -97,13 +97,13 @@ export function StockChart({ symbol }: StockChartProps) {
                 </div>
             </div>
             
-            <div style={{ height: '300px', width: '100%' }}>
+            <div style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', minWidth: 0 }}>
                 {loading ? (
                     <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
                         Loading chart data...
                     </div>
                 ) : chartData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="99%" height="100%">
                         <AreaChart data={chartData}>
                             <defs>
                                 <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
