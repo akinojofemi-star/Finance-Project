@@ -35,33 +35,31 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
 
     return (
         <header className="top-nav">
-            <div className="logo-area">
-                <div className="logo-wrapper">
-                    {onToggleMobileMenu && (
-                        <button className="icon-btn hamburger-btn" onClick={onToggleMobileMenu}>
-                            <Menu size={20} />
-                        </button>
-                    )}
-                    <span className="logo-text">SYNAPSE</span>
-                </div>
-                
-                {onNavigate && user && (
-                    <nav className="nav-tabs">
-                        <button 
-                            onClick={() => onNavigate('dashboard')}
-                            className={`nav-btn ${currentView === 'dashboard' ? 'active' : ''}`}
-                        >
-                            <LayoutDashboard size={14} /> Research
-                        </button>
-                        <button 
-                            onClick={() => onNavigate('portfolio')}
-                            className={`nav-btn ${currentView === 'portfolio' ? 'active' : ''}`}
-                        >
-                            <Briefcase size={14} /> Portfolio
-                        </button>
-                    </nav>
+            <div className="logo-group">
+                {onToggleMobileMenu && (
+                    <button className="icon-btn hamburger-btn" onClick={onToggleMobileMenu}>
+                        <Menu size={20} />
+                    </button>
                 )}
+                <span className="logo-text">SYNAPSE</span>
             </div>
+            
+            {onNavigate && user && (
+                <nav className="nav-tabs">
+                    <button 
+                        onClick={() => onNavigate('dashboard')}
+                        className={`nav-btn ${currentView === 'dashboard' ? 'active' : ''}`}
+                    >
+                        <LayoutDashboard size={14} /> Research
+                    </button>
+                    <button 
+                        onClick={() => onNavigate('portfolio')}
+                        className={`nav-btn ${currentView === 'portfolio' ? 'active' : ''}`}
+                    >
+                        <Briefcase size={14} /> Portfolio
+                    </button>
+                </nav>
+            )}
             
             <div className="search-area">
                 <div className="search-box">
@@ -77,9 +75,9 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                 </div>
             </div>
             
-            <div className="nav-right">
+            <div className="user-actions">
                 {user && (
-                    <div className="user-actions">
+                    <>
                         {portfolioBalance !== null && portfolioBalance !== undefined && (
                             <div className="buying-power-badge hide-on-mobile">
                                 ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BP
@@ -96,7 +94,7 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                         <button className="icon-btn logout-btn" onClick={signOut} title="Sign Out">
                             <LogOut size={20} />
                         </button>
-                    </div>
+                    </>
                 )}
                 <button className="icon-btn theme-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
                     {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
