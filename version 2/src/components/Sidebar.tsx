@@ -8,9 +8,10 @@ interface SidebarProps {
     companyNames: Record<string, string>;
     activeTicker: string | null;
     onSelectTicker: (symbol: string) => void;
+    isMobileOpen?: boolean;
 }
 
-export function Sidebar({ watchlist, companyNames, activeTicker, onSelectTicker }: SidebarProps) {
+export function Sidebar({ watchlist, companyNames, activeTicker, onSelectTicker, isMobileOpen }: SidebarProps) {
     const [quotes, setQuotes] = useState<Record<string, Quote>>({});
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
 
@@ -29,7 +30,7 @@ export function Sidebar({ watchlist, companyNames, activeTicker, onSelectTicker 
     }, [watchlist]);
 
     return (
-        <aside className="sidebar">
+        <aside className={`sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
             <div className="sidebar-section">
                 <div className="sidebar-header">
                     <h2>Lists</h2>

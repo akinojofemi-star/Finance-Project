@@ -129,6 +129,7 @@ function App() {
 
     const [isGuest, setIsGuest] = useState(false);
     const [currentView, setCurrentView] = useState<'dashboard' | 'portfolio' | 'settings'>('dashboard');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     if (isLoading) {
         return (
@@ -146,17 +147,19 @@ function App() {
                 onToggleTheme={toggleTheme} 
                 portfolioBalance={portfolioBalance} 
                 currentView={currentView}
-                onNavigate={setCurrentView}
+                onNavigate={(v) => { setCurrentView(v); setIsMobileMenuOpen(false); }}
+                onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             />
             
             {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
 
-            <div style={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
+            <div className="dashboard-container" style={{ display: 'flex', flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
                 <Sidebar 
                     watchlist={state.watchlist} 
                     companyNames={state.companyNames}
                     activeTicker={state.activeTicker}
-                    onSelectTicker={handleSelectTicker}
+                    onSelectTicker={(t) => { handleSelectTicker(t); setIsMobileMenuOpen(false); }}
+                    isMobileOpen={isMobileMenuOpen}
                 />
                 
                 {currentView === 'dashboard' && (

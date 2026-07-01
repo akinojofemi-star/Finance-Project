@@ -66,3 +66,83 @@ body {
     color: var(--text-primary);
     font-weight: 600;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+    /* TopNav layout adjustments */
+    .top-nav {
+        flex-wrap: wrap;
+        padding: 12px;
+        height: auto;
+        min-height: 60px;
+    }
+    
+    .logo-area {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+    
+    .nav-right {
+        order: 2;
+        width: auto;
+    }
+    
+    .search-area {
+        order: 3;
+        width: 100%;
+        margin-top: 12px;
+        max-width: none;
+    }
+    
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    /* Sidebar Drawer Mode */
+    .sidebar {
+        position: absolute;
+        top: 0;
+        left: -320px;
+        height: 100%;
+        z-index: 100;
+        transition: left 0.3s ease;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+    
+    .sidebar.mobile-open {
+        left: 0;
+    }
+
+    /* Dashboard Stacking */
+    .dashboard-container {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+    }
+    
+    .right-sidebar {
+        width: 100% !important;
+        border-left: none !important;
+        border-top: 1px solid var(--border-light);
+    }
+    
+    .main-content {
+        overflow-y: visible !important;
+    }
+
+    /* Horizontal scroll for index cards */
+    .index-cards-row {
+        overflow-x: auto;
+        padding-bottom: 12px;
+    }
+    
+    /* Portfolio Table Scroll */
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    /* Grid adjustments */
+    .mobile-grid-1 {
+        grid-template-columns: 1fr !important;
+    }
+}

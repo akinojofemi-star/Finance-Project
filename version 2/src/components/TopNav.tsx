@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { searchSymbol } from '../services/api';
 import { searchSymbol } from '../services/api';
-import { Search, Loader2, Sun, Moon, LogOut, LayoutDashboard, Briefcase, Settings } from 'lucide-react';
+import { Search, Loader2, Sun, Moon, LogOut, LayoutDashboard, Briefcase, Settings, Menu } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface TopNavProps {
@@ -11,9 +11,10 @@ interface TopNavProps {
     portfolioBalance?: number | null;
     currentView?: 'dashboard' | 'portfolio' | 'settings';
     onNavigate?: (view: 'dashboard' | 'portfolio' | 'settings') => void;
+    onToggleMobileMenu?: () => void;
 }
 
-export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, currentView = 'dashboard', onNavigate }: TopNavProps) {
+export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, currentView = 'dashboard', onNavigate, onToggleMobileMenu }: TopNavProps) {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const { user, signOut } = useAuth();
@@ -36,7 +37,14 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
     return (
         <header className="top-nav">
             <div className="logo-area" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                <span className="logo-text">SYNAPSE FINANCE</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    {onToggleMobileMenu && (
+                        <button className="icon-btn" onClick={onToggleMobileMenu} style={{ display: 'flex', alignItems: 'center' }}>
+                            <Menu size={20} />
+                        </button>
+                    )}
+                    <span className="logo-text">SYNAPSE FINANCE</span>
+                </div>
                 
                 {onNavigate && user && (
                     <nav style={{ display: 'flex', gap: '8px' }}>
@@ -96,7 +104,7 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                                 ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Buying Power
                             </div>
                         )}
-                        <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                        <span className="hide-on-mobile" style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                             {user.email}
                         </span>
                         {onNavigate && (

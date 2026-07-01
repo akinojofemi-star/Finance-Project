@@ -147,7 +147,7 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
                     </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                <div className="mobile-grid-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                     {/* Active Holdings Table */}
                     <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '24px', border: '1px solid var(--border-light)' }}>
                         <h3 style={{ fontSize: '18px', marginBottom: '24px' }}>Current Holdings</h3>
@@ -157,8 +157,9 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
                                 No active holdings. Go to Dashboard to start trading.
                             </div>
                         ) : (
-                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                <thead>
+                            <div className="table-container">
+                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
+                                    <thead>
                                     <tr style={{ color: 'var(--text-secondary)', fontSize: '12px', textTransform: 'uppercase', textAlign: 'left', borderBottom: '1px solid var(--border-light)' }}>
                                         <th style={{ paddingBottom: '12px', fontWeight: 500 }}>Symbol</th>
                                         <th style={{ paddingBottom: '12px', fontWeight: 500, textAlign: 'right' }}>Shares</th>
@@ -177,6 +178,7 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
                                     ))}
                                 </tbody>
                             </table>
+                            </div>
                         )}
                     </div>
 
