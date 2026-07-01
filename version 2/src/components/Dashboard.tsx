@@ -20,7 +20,7 @@ export function Dashboard({ watchlist, companyNames, activeTicker, onSelectTicke
     
     
     return (
-        <div className="dashboard-container" style={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
+        <div className="dashboard-content">
             <main className="main-content">
                 <div className="index-cards-row">
                     {watchlist.map(ticker => (

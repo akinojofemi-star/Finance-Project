@@ -140,7 +140,7 @@ function App() {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <div className="app-root">
             <TopNav 
                 onAddSymbol={handleAddSymbol} 
                 theme={theme} 
@@ -153,7 +153,7 @@ function App() {
             
             {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
 
-            <div className="dashboard-container" style={{ display: 'flex', flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
+            <div className="dashboard-layout">
                 <Sidebar 
                     watchlist={state.watchlist} 
                     companyNames={state.companyNames}
