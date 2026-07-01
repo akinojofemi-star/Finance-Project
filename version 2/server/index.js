@@ -1,6 +1,12 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -29,7 +35,6 @@ app.get('/api/finnhub/*', async (req, res) => {
 });
 
 // Serve React static files in production
-const path = require('path');
 app.use(express.static(path.join(__dirname, '../dist')));
 
 // AI Chat Proxy
