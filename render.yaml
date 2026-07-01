@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: bloomberg-terminal
+    name: synapse-finance
     env: node
     rootDir: version 2
     buildCommand: npm install && npm install --prefix server && npm run build

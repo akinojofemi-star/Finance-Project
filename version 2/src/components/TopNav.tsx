@@ -32,7 +32,7 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme }: TopNavProps) {
     return (
         <header className="top-nav">
             <div className="logo-area">
-                <span className="logo-text">FEMI FINANCE</span>
+                <span className="logo-text">SYNAPSE FINANCE</span>
             </div>
             <div className="search-area">
                 <div className="search-box">

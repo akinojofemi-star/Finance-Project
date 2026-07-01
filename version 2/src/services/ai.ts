@@ -28,7 +28,7 @@ Recent headlines:
 ${context.newsHeadlines && context.newsHeadlines.length > 0 ? context.newsHeadlines.map((h, i) => `${i + 1}. ${h}`).join('\n') : 'No recent news available.'}`;
 
     const apiMessages: any[] = [
-        { role: "system", content: "You are an expert Bloomberg Terminal AI assistant. Be concise, objective, and analytical. Use markdown formatting for readability." },
+        { role: "system", content: "You are an expert Synapse Finance AI assistant. Be concise, objective, and analytical. Use markdown formatting for readability." },
         { role: "system", content: `LATEST LIVE DATA:\n${baseData}` }
     ];
 

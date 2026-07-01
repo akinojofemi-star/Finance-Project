@@ -72,7 +72,7 @@ export function AIAnalysis({ symbol, name }: AIAnalysisProps) {
     return (
         <div className="ai-analysis-container" style={{ padding: '24px' }}>
             <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center' }}>
-                <h3 style={{ margin: 0 }}>Bloomberg Terminal Intelligence</h3>
+                <h3 style={{ margin: 0 }}>Synapse Intelligence</h3>
             </div>
 
             <div style={{ flexGrow: 1, overflowY: 'auto', paddingBottom: '16px', display: 'flex', flexDirection: 'column' }}>
