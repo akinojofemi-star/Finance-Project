@@ -35,51 +35,40 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
 
     return (
         <header className="top-nav">
-            <div className="logo-area" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="logo-area">
+                <div className="logo-wrapper">
                     {onToggleMobileMenu && (
-                        <button className="icon-btn" onClick={onToggleMobileMenu} style={{ display: 'flex', alignItems: 'center' }}>
+                        <button className="icon-btn hamburger-btn" onClick={onToggleMobileMenu}>
                             <Menu size={20} />
                         </button>
                     )}
-                    <span className="logo-text">SYNAPSE FINANCE</span>
+                    <span className="logo-text">SYNAPSE</span>
                 </div>
                 
                 {onNavigate && user && (
-                    <nav style={{ display: 'flex', gap: '8px' }}>
+                    <nav className="nav-tabs">
                         <button 
                             onClick={() => onNavigate('dashboard')}
-                            style={{
-                                display: 'flex', alignItems: 'center', gap: '6px',
-                                padding: '6px 12px', background: currentView === 'dashboard' ? 'var(--card-bg)' : 'transparent',
-                                border: '1px solid', borderColor: currentView === 'dashboard' ? 'var(--border-light)' : 'transparent',
-                                borderRadius: '4px', color: currentView === 'dashboard' ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                cursor: 'pointer', fontSize: '13px', fontWeight: 500
-                            }}
+                            className={`nav-btn ${currentView === 'dashboard' ? 'active' : ''}`}
                         >
                             <LayoutDashboard size={14} /> Research
                         </button>
                         <button 
                             onClick={() => onNavigate('portfolio')}
-                            style={{
-                                display: 'flex', alignItems: 'center', gap: '6px',
-                                padding: '6px 12px', background: currentView === 'portfolio' ? 'var(--card-bg)' : 'transparent',
-                                border: '1px solid', borderColor: currentView === 'portfolio' ? 'var(--border-light)' : 'transparent',
-                                borderRadius: '4px', color: currentView === 'portfolio' ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                cursor: 'pointer', fontSize: '13px', fontWeight: 500
-                            }}
+                            className={`nav-btn ${currentView === 'portfolio' ? 'active' : ''}`}
                         >
                             <Briefcase size={14} /> Portfolio
                         </button>
                     </nav>
                 )}
             </div>
+            
             <div className="search-area">
                 <div className="search-box">
                     <Search className="search-icon" size={20} />
                     <input 
                         type="text" 
-                        placeholder="What's going on with the markets today?" 
+                        placeholder="Search markets..." 
                         value={query}
                         onChange={e => setQuery(e.target.value)}
                         onKeyDown={handleSearch}
@@ -87,36 +76,29 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                     {loading && <Loader2 className="spinner" size={20} />}
                 </div>
             </div>
-            <div className="nav-right" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '16px', flex: 1 }}>
+            
+            <div className="nav-right">
                 {user && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div className="user-actions">
                         {portfolioBalance !== null && portfolioBalance !== undefined && (
-                            <div style={{ 
-                                padding: '4px 12px', 
-                                backgroundColor: 'rgba(129, 201, 149, 0.1)', 
-                                border: '1px solid var(--positive)', 
-                                borderRadius: '4px',
-                                color: 'var(--positive)',
-                                fontWeight: 600,
-                                fontSize: '14px'
-                            }}>
-                                ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Buying Power
+                            <div className="buying-power-badge hide-on-mobile">
+                                ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BP
                             </div>
                         )}
-                        <span className="hide-on-mobile" style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                        <span className="hide-on-mobile user-email">
                             {user.email}
                         </span>
                         {onNavigate && (
-                            <button className="icon-btn" onClick={() => onNavigate('settings')} title="Settings" style={{ color: currentView === 'settings' ? 'var(--accent)' : 'var(--text-primary)' }}>
+                            <button className={`icon-btn ${currentView === 'settings' ? 'active-icon' : ''}`} onClick={() => onNavigate('settings')} title="Settings">
                                 <Settings size={20} />
                             </button>
                         )}
-                        <button className="icon-btn" onClick={signOut} title="Sign Out" style={{ color: 'var(--negative)' }}>
+                        <button className="icon-btn logout-btn" onClick={signOut} title="Sign Out">
                             <LogOut size={20} />
                         </button>
                     </div>
                 )}
-                <button className="icon-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+                <button className="icon-btn theme-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
                     {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
             </div>
