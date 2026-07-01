@@ -62,10 +62,10 @@ export function StockChart({ symbol }: StockChartProps) {
 
     return (
         <div className="chart-container" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '16px', marginBottom: '24px', minWidth: 0 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <h3 style={{ margin: 0, fontSize: '18px' }}>Price History</h3>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px', minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0, flexWrap: 'wrap' }}>
+                    <h3 style={{ margin: 0, fontSize: '18px', minWidth: 0, wordBreak: 'break-word' }}>Price History</h3>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-secondary)', minWidth: 0 }}>
                         <input 
                             type="checkbox" 
                             checked={showSMA}
