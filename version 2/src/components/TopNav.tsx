@@ -7,9 +7,10 @@ interface TopNavProps {
     onAddSymbol: (symbol: string, description: string) => void;
     theme: 'dark' | 'light';
     onToggleTheme: () => void;
+    portfolioBalance?: number | null;
 }
 
-export function TopNav({ onAddSymbol, theme, onToggleTheme }: TopNavProps) {
+export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance }: TopNavProps) {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const { user, signOut } = useAuth();
@@ -50,6 +51,19 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme }: TopNavProps) {
             <div className="nav-right" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '16px', flex: 1 }}>
                 {user && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        {portfolioBalance !== null && portfolioBalance !== undefined && (
+                            <div style={{ 
+                                padding: '4px 12px', 
+                                backgroundColor: 'rgba(129, 201, 149, 0.1)', 
+                                border: '1px solid var(--positive)', 
+                                borderRadius: '4px',
+                                color: 'var(--positive)',
+                                fontWeight: 600,
+                                fontSize: '14px'
+                            }}>
+                                ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Buying Power
+                            </div>
+                        )}
                         <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                             {user.email}
                         </span>

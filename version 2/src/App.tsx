@@ -6,6 +6,7 @@ import { Dashboard } from './components/Dashboard';
 import { LoginModal } from './components/LoginModal';
 import { useAuth } from './contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
+import { supabase } from './lib/supabase';
 
 export interface AppState {
     watchlist: string[];
@@ -43,9 +44,57 @@ function App() {
     });
 
     useEffect(() => {
+        if (!user) return;
+        const fetchWatchlist = async () => {
+            const { data, error } = await supabase
+                .from('watchlists')
+                .select('symbols')
+                .eq('user_id', user.id)
+                .maybeSingle();
+                
+            if (data && data.symbols && data.symbols.length > 0) {
+                setState(s => ({ ...s, watchlist: data.symbols as string[], activeTicker: data.symbols![0] }));
+            } else if (!data) {
+                // Initialize if no row exists
+                await supabase.from('watchlists').insert({
+                    user_id: user.id,
+                    symbols: state.watchlist
+                });
+            }
+        };
+        fetchWatchlist();
+    }, [user]);
+
+    useEffect(() => {
         localStorage.setItem('stockTrackerWatchlist', JSON.stringify(state.watchlist));
         localStorage.setItem('stockTrackerNames', JSON.stringify(state.companyNames));
-    }, [state.watchlist, state.companyNames]);
+        
+        if (user) {
+            supabase.from('watchlists').upsert({
+                user_id: user.id,
+                symbols: state.watchlist
+            }, { onConflict: 'user_id' }).then();
+        }
+    }, [state.watchlist, state.companyNames, user]);
+
+    const [portfolioBalance, setPortfolioBalance] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (!user) {
+            setPortfolioBalance(null);
+            return;
+        }
+        const fetchPortfolio = async () => {
+            const { data } = await supabase.from('portfolios').select('balance').eq('user_id', user.id).maybeSingle();
+            if (data && data.balance !== null) {
+                setPortfolioBalance(data.balance);
+            } else if (!data) {
+                const { data: newData } = await supabase.from('portfolios').insert({ user_id: user.id, balance: 100000 }).select('balance').single();
+                if (newData) setPortfolioBalance(newData.balance);
+            }
+        };
+        fetchPortfolio();
+    }, [user]);
 
     useEffect(() => {
         localStorage.setItem('femiFinanceTheme', theme);
@@ -88,7 +137,7 @@ function App() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <TopNav onAddSymbol={handleAddSymbol} theme={theme} onToggleTheme={toggleTheme} />
+            <TopNav onAddSymbol={handleAddSymbol} theme={theme} onToggleTheme={toggleTheme} portfolioBalance={portfolioBalance} />
             
             {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
 
@@ -105,6 +154,8 @@ function App() {
                     companyNames={state.companyNames}
                     activeTicker={state.activeTicker}
                     onSelectTicker={handleSelectTicker}
+                    portfolioBalance={portfolioBalance}
+                    onBalanceChange={setPortfolioBalance}
                 />
             </div>
         </div>

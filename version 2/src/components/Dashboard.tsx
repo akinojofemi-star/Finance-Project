@@ -5,15 +5,18 @@ import { NewsCardList } from './NewsCard';
 import { StockChart } from './StockChart';
 import { CompanyStats } from './CompanyStats';
 import { AIAnalysis } from './AIAnalysis';
+import { PaperTrading } from './PaperTrading';
 
 interface DashboardProps {
     watchlist: string[];
     companyNames: Record<string, string>;
     activeTicker: string | null;
     onSelectTicker: (symbol: string) => void;
+    portfolioBalance?: number | null;
+    onBalanceChange?: (newBalance: number) => void;
 }
 
-export function Dashboard({ watchlist, companyNames, activeTicker, onSelectTicker }: DashboardProps) {
+export function Dashboard({ watchlist, companyNames, activeTicker, onSelectTicker, portfolioBalance, onBalanceChange }: DashboardProps) {
     
     
     return (
@@ -32,6 +35,15 @@ export function Dashboard({ watchlist, companyNames, activeTicker, onSelectTicke
                     
                     {activeTicker && <StockChart symbol={activeTicker} />}
                     {activeTicker && <CompanyStats symbol={activeTicker} />}
+                    
+                    {activeTicker && onBalanceChange && (
+                        <PaperTrading 
+                            symbol={activeTicker} 
+                            name={companyNames[activeTicker] || activeTicker} 
+                            portfolioBalance={portfolioBalance ?? null}
+                            onBalanceChange={onBalanceChange}
+                        />
+                    )}
                     
                     <NewsCardList symbol={activeTicker} />
                 </section>
