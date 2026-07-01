@@ -116,7 +116,7 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
     const netWorth = (portfolioBalance || 0) + investmentsValue;
 
     return (
-        <div style={{ flex: 1, padding: '32px', overflowY: 'auto', backgroundColor: 'var(--bg-color)' }}>
+        <div style={{ flex: 1, padding: '16px', overflowY: 'auto', backgroundColor: 'var(--bg-color)' }}>
             <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
                 <h2 style={{ fontSize: '24px', marginBottom: '32px' }}>Portfolio Dashboard</h2>
 
@@ -126,19 +126,19 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
                         <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <Briefcase size={16} /> Total Net Worth
                         </div>
-                        <div style={{ fontSize: '32px', fontWeight: 600 }}>${netWorth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                        <div style={{ fontSize: '24px', fontWeight: 600, wordBreak: 'break-word' }}>${netWorth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     </div>
                     
                     <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '24px', border: '1px solid var(--border-light)' }}>
                         <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <DollarSign size={16} /> Cash Balance
                         </div>
-                        <div style={{ fontSize: '32px', fontWeight: 600 }}>${(portfolioBalance || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                        <div style={{ fontSize: '24px', fontWeight: 600, wordBreak: 'break-word' }}>${(portfolioBalance || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     </div>
 
                     <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '24px', border: '1px solid var(--border-light)' }}>
                         <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px' }}>Investments Value</div>
-                        <div style={{ fontSize: '32px', fontWeight: 600, marginBottom: '8px' }}>${investmentsValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                        <div style={{ fontSize: '24px', fontWeight: 600, marginBottom: '8px', wordBreak: 'break-word' }}>${investmentsValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                         
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: totalReturn >= 0 ? 'var(--positive)' : 'var(--negative)', fontSize: '14px', fontWeight: 500 }}>
                             {totalReturn >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
@@ -158,7 +158,7 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
                             </div>
                         ) : (
                             <div className="table-container">
-                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
                                     <tr style={{ color: 'var(--text-secondary)', fontSize: '12px', textTransform: 'uppercase', textAlign: 'left', borderBottom: '1px solid var(--border-light)' }}>
                                         <th style={{ paddingBottom: '12px', fontWeight: 500 }}>Symbol</th>
@@ -194,7 +194,7 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
                             <div style={{ overflowY: 'auto', maxHeight: '500px', paddingRight: '8px' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     {trades.map(trade => (
-                                        <div key={trade.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: 'var(--bg-color)', borderRadius: '8px' }}>
+                                        <div key={trade.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: 'var(--bg-color)', borderRadius: '8px', flexWrap: 'wrap', gap: '12px' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                                 <div style={{ 
                                                     padding: '8px', 

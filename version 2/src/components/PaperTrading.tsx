@@ -122,7 +122,7 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
         <div className="paper-trading-panel">
             <h3 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Trade {symbol}</h3>
             
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '24px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                 <div>Shares Held: <strong style={{ color: 'var(--text-primary)' }}>{sharesHeld}</strong></div>
                 <div>Current Value: <strong style={{ color: 'var(--text-primary)' }}>${currentPrice ? (sharesHeld * currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '--'}</strong></div>
             </div>
@@ -161,12 +161,12 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
                     />
                 </div>
                 
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <button 
                         onClick={() => handleTrade('BUY')}
                         disabled={loading || !currentPrice}
                         style={{
-                            padding: '10px 24px',
+                            padding: '10px 16px',
                             backgroundColor: 'var(--positive)',
                             color: '#000',
                             border: 'none',
@@ -183,7 +183,7 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
                         onClick={() => handleTrade('SELL')}
                         disabled={loading || !currentPrice || sharesHeld <= 0}
                         style={{
-                            padding: '10px 24px',
+                            padding: '10px 16px',
                             backgroundColor: 'transparent',
                             color: 'var(--negative)',
                             border: '1px solid var(--negative)',

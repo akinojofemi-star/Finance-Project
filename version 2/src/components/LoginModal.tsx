@@ -59,6 +59,7 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
         padding: '32px',
         width: '100%',
         maxWidth: '400px',
+        margin: '16px',
         boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '32px' }}>

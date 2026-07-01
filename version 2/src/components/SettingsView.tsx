@@ -93,7 +93,7 @@ export function SettingsView({ theme, onToggleTheme }: SettingsViewProps) {
     }
 
     return (
-        <div style={{ flex: 1, padding: '32px', overflowY: 'auto', backgroundColor: 'var(--bg-color)' }}>
+        <div style={{ flex: 1, padding: '16px', overflowY: 'auto', backgroundColor: 'var(--bg-color)' }}>
             <div style={{ maxWidth: '600px', margin: '0 auto' }}>
                 <h2 style={{ fontSize: '24px', marginBottom: '32px' }}>Account Settings</h2>
 
@@ -118,7 +118,7 @@ export function SettingsView({ theme, onToggleTheme }: SettingsViewProps) {
                         )}
                         <div>
                             <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>Display Name</label>
-                            <div style={{ display: 'flex', gap: '12px' }}>
+                            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                                 <input 
                                     type="text" 
                                     value={displayName}
@@ -160,7 +160,7 @@ export function SettingsView({ theme, onToggleTheme }: SettingsViewProps) {
                 {/* Appearance */}
                 <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '8px', padding: '24px', border: '1px solid var(--border-light)', marginBottom: '24px' }}>
                     <h3 style={{ fontSize: '16px', marginBottom: '16px', color: 'var(--text-secondary)' }}>APPEARANCE</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                         <div>
                             <div style={{ fontWeight: 500, marginBottom: '4px' }}>Theme Preference</div>
                             <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Toggle between light and dark mode</div>
@@ -250,7 +250,7 @@ export function SettingsView({ theme, onToggleTheme }: SettingsViewProps) {
                         <AlertTriangle size={16} /> DANGER ZONE
                     </h3>
                     
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                         <div>
                             <div style={{ fontWeight: 500, marginBottom: '4px' }}>Reset Portfolio</div>
                             <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Delete all trade history and reset balance to $100,000</div>
