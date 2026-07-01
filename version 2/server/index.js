@@ -28,6 +28,10 @@ app.get('/api/finnhub/*', async (req, res) => {
     }
 });
 
+// Serve React static files in production
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../dist')));
+
 // AI Chat Proxy
 app.post('/api/ai/chat', async (req, res) => {
     try {
@@ -64,6 +68,11 @@ app.post('/api/ai/chat', async (req, res) => {
         console.error('AI chat proxy error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+});
+
+// Catch-all route to serve React app for non-API requests
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 const PORT = process.env.PORT || 3001;

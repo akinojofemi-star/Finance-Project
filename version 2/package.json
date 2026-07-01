@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --open",
     "start": "vite --open",
+    "start:prod": "node server/index.js",
     "server": "cd server && node index.js",
     "dev:all": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "tsc -b && vite build",
@@ -13,6 +14,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.0",
     "lucide-react": "^1.21.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

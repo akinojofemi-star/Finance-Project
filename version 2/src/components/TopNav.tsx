@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { searchSymbol } from '../services/api';
-import { Search, Loader2, Sun, Moon } from 'lucide-react';
+import { Search, Loader2, Sun, Moon, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface TopNavProps {
     onAddSymbol: (symbol: string, description: string) => void;
@@ -11,6 +12,7 @@ interface TopNavProps {
 export function TopNav({ onAddSymbol, theme, onToggleTheme }: TopNavProps) {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
+    const { user, signOut } = useAuth();
 
     const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && query.trim()) {
@@ -45,7 +47,17 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme }: TopNavProps) {
                     {loading && <Loader2 className="spinner" size={20} />}
                 </div>
             </div>
-            <div className="nav-right" style={{ display: 'flex', justifyContent: 'flex-end', width: '100px' }}>
+            <div className="nav-right" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '16px', flex: 1 }}>
+                {user && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                            {user.email}
+                        </span>
+                        <button className="icon-btn" onClick={signOut} title="Sign Out" style={{ color: 'var(--negative)' }}>
+                            <LogOut size={20} />
+                        </button>
+                    </div>
+                )}
                 <button className="icon-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
                     {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                 </button>

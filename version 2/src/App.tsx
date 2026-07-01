@@ -3,6 +3,9 @@ import './App.css';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
 import { Dashboard } from './components/Dashboard';
+import { LoginModal } from './components/LoginModal';
+import { useAuth } from './contexts/AuthContext';
+import { Loader2 } from 'lucide-react';
 
 export interface AppState {
     watchlist: string[];
@@ -24,6 +27,7 @@ const DEFAULT_NAMES = {
 };
 
 function App() {
+    const { user, isLoading } = useAuth();
     const [state, setState] = useState<AppState>(() => {
         const savedWatchlist = localStorage.getItem('stockTrackerWatchlist');
         const savedNames = localStorage.getItem('stockTrackerNames');
@@ -72,10 +76,20 @@ function App() {
         });
     };
 
+    if (isLoading) {
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: 'var(--bg-color)' }}>
+                <Loader2 size={48} className="spinner" color="var(--accent)" />
+            </div>
+        );
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <TopNav onAddSymbol={handleAddSymbol} theme={theme} onToggleTheme={toggleTheme} />
             
+            {!user && <LoginModal />}
+
             <div style={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
                 <Sidebar 
                     watchlist={state.watchlist} 
