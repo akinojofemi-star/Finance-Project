@@ -2,11 +2,12 @@
 .top-nav {
     display: flex;
     align-items: center;
-    padding: 0 24px;
+    padding: env(safe-area-inset-top, 0px) 24px 0 24px;
     background-color: var(--sidebar-bg);
     border-bottom: 1px solid var(--border-light);
-    height: 64px;
+    height: calc(64px + env(safe-area-inset-top, 0px));
     gap: 24px;
+    flex-shrink: 0;
 }
 
 .logo-group {
@@ -137,6 +138,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    padding-top: env(safe-area-inset-top, 0px);
 }
 
 .sidebar-section {
@@ -838,8 +840,9 @@ body.light-theme .ai-chat-submit:hover {
     .top-nav {
         flex-wrap: wrap !important;
         height: auto !important;
-        padding: 12px !important;
+        padding: calc(12px + env(safe-area-inset-top, 0px)) 12px 12px 12px !important;
         gap: 12px !important;
+        flex-shrink: 0 !important;
     }
 
     .logo-group {
