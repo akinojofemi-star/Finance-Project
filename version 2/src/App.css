@@ -604,6 +604,56 @@
     margin-bottom: 24px;
 }
 
+/* Stock Chart & Paper Trading Base Styles */
+.chart-container {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    min-width: 0;
+}
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+    min-width: 0;
+}
+.main-chart-area {
+    height: 300px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+}
+.range-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+}
+.range-btn.active {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+body.light-theme .range-btn.active {
+    background: rgba(0,0,0,0.05);
+}
+
+.paper-trading-panel {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
 .stats-header {
     font-size: 18px;
     font-weight: 500;
@@ -962,13 +1012,82 @@ body.light-theme .ai-chat-submit:hover {
     
     .main-content {
         overflow-y: visible !important;
-        padding: 16px !important;
+        padding: 0 !important;
+    }
+    
+    .section-title {
+        padding: 0 16px;
+        margin-bottom: 16px !important;
+        font-size: 20px !important;
+    }
+    
+    .index-cards-row {
+        padding: 4px 16px 16px 16px !important;
     }
 
-    /* Horizontal scroll for index cards */
-    .index-cards-row {
-        overflow-x: auto !important;
-        padding-bottom: 12px !important;
+    .chart-container {
+        padding: 16px 0 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .chart-header {
+        padding: 0 16px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .main-chart-area {
+        height: 220px !important;
+    }
+    
+    .range-btn {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+    
+    .company-stats-panel {
+        padding: 16px !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        margin: 0 !important;
+    }
+    
+    .stats-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px 12px !important;
+    }
+    
+    .stat-label {
+        font-size: 12px !important;
+    }
+    
+    .stat-value {
+        font-size: 13px !important;
+    }
+    
+    .paper-trading-panel {
+        padding: 16px !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        margin: 0 !important;
+    }
+    
+    .news-feed {
+        padding: 0 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+    }
+    
+    .news-item {
+        border-bottom: 1px solid var(--border-light);
+        padding: 16px !important;
     }
     
     /* Portfolio Table Scroll */

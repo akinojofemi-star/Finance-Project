@@ -119,13 +119,7 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
     };
 
     return (
-        <div style={{
-            backgroundColor: 'var(--card-bg)',
-            border: '1px solid var(--border-light)',
-            borderRadius: '8px',
-            padding: '24px',
-            marginTop: '24px'
-        }}>
+        <div className="paper-trading-panel">
             <h3 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Trade {symbol}</h3>
             
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', fontSize: '14px', color: 'var(--text-secondary)' }}>

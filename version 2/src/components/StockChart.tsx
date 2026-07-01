@@ -61,8 +61,8 @@ export function StockChart({ symbol }: StockChartProps) {
     const color = isPositive ? '#81c995' : '#f28b82';
 
     return (
-        <div className="chart-container" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '16px', marginBottom: '24px', minWidth: 0 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px', minWidth: 0 }}>
+        <div className="chart-container">
+            <div className="chart-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0, flexWrap: 'wrap' }}>
                     <h3 style={{ margin: 0, fontSize: '18px', minWidth: 0, wordBreak: 'break-word' }}>Price History</h3>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-secondary)', minWidth: 0 }}>
@@ -80,16 +80,7 @@ export function StockChart({ symbol }: StockChartProps) {
                         <button 
                             key={r}
                             onClick={() => setRange(r)}
-                            style={{ 
-                                background: range === r ? 'rgba(255,255,255,0.1)' : 'transparent',
-                                border: 'none',
-                                color: range === r ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                padding: '6px 12px',
-                                borderRadius: '16px',
-                                cursor: 'pointer',
-                                fontSize: '13px',
-                                fontWeight: 500
-                            }}
+                            className={`range-btn ${range === r ? 'active' : ''}`}
                         >
                             {r}
                         </button>
@@ -97,7 +88,7 @@ export function StockChart({ symbol }: StockChartProps) {
                 </div>
             </div>
             
-            <div style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', minWidth: 0 }}>
+            <div className="main-chart-area">
                 {loading ? (
                     <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
                         Loading chart data...
