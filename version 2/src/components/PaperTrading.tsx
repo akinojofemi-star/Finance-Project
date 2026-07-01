@@ -11,7 +11,7 @@ interface PaperTradingProps {
     onBalanceChange: (newBalance: number) => void;
 }
 
-export function PaperTrading({ symbol, name, portfolioBalance, onBalanceChange }: PaperTradingProps) {
+export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: PaperTradingProps) {
     const { user } = useAuth();
     const [sharesHeld, setSharesHeld] = useState<number>(0);
     const [currentPrice, setCurrentPrice] = useState<number | null>(null);

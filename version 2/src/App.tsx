@@ -48,7 +48,7 @@ function App() {
     useEffect(() => {
         if (!user) return;
         const fetchWatchlist = async () => {
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('watchlists')
                 .select('symbols')
                 .eq('user_id', user.id)

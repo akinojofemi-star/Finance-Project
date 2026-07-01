@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { searchSymbol } from '../services/api';
-import { searchSymbol } from '../services/api';
 import { Search, Loader2, Sun, Moon, LogOut, LayoutDashboard, Briefcase, Settings, Menu } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 

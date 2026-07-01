@@ -39,8 +39,8 @@ export function AIAnalysis({ symbol, name }: AIAnalysisProps) {
                 .eq('user_id', user.id)
                 .eq('symbol', symbol)
                 .order('created_at', { ascending: false })
-                .then(({ data, error }) => {
-                    if (data) setHistoryList(data);
+                .then(({ data }) => {
+                    if (data) setHistoryList(data as {id: string, analysis_markdown: string, created_at: string}[]);
                     setLoadingHistory(false);
                 });
         }
