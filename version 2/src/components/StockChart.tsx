@@ -61,8 +61,8 @@ export function StockChart({ symbol }: StockChartProps) {
     const color = isPositive ? '#81c995' : '#f28b82';
 
     return (
-        <div className="chart-container" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '24px', marginBottom: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <div className="chart-container" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '16px', marginBottom: '24px', minWidth: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <h3 style={{ margin: 0, fontSize: '18px' }}>Price History</h3>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -75,7 +75,7 @@ export function StockChart({ symbol }: StockChartProps) {
                         Show 20-Period SMA
                     </label>
                 </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                     {RANGES.map(r => (
                         <button 
                             key={r}
