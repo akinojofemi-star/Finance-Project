@@ -118,21 +118,24 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
         }
     };
 
+    const fmt = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const orderTotal = currentPrice ? parseInt(quantity || '0') * currentPrice : 0;
+
     return (
         <div className="paper-trading-panel">
-            <h3 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Trade {symbol}</h3>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '24px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 600 }}>Trade {symbol}</h3>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', fontSize: '13px', color: 'var(--text-secondary)' }}>
                 <div>Shares Held: <strong style={{ color: 'var(--text-primary)' }}>{sharesHeld}</strong></div>
-                <div>Current Value: <strong style={{ color: 'var(--text-primary)' }}>${currentPrice ? (sharesHeld * currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '--'}</strong></div>
+                <div>Current Value: <strong style={{ color: 'var(--text-primary)' }}>${currentPrice ? fmt(sharesHeld * currentPrice) : '--'}</strong></div>
             </div>
 
             {error && (
                 <div style={{
-                    padding: '8px 12px',
-                    backgroundColor: 'rgba(242, 139, 130, 0.1)',
+                    padding: '10px 12px',
+                    backgroundColor: 'rgba(255, 59, 48, 0.1)',
                     border: '1px solid var(--negative)',
-                    borderRadius: '4px',
+                    borderRadius: '8px',
                     color: 'var(--negative)',
                     fontSize: '13px',
                     marginBottom: '16px'
@@ -141,57 +144,31 @@ export function PaperTrading({ symbol, portfolioBalance, onBalanceChange }: Pape
                 </div>
             )}
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
-                <div style={{ flex: 1, minWidth: '120px' }}>
-                    <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '6px' }}>Quantity</label>
-                    <input 
-                        type="number" 
+            <div className="trade-controls">
+                <div className="trade-qty">
+                    <label className="form-label" style={{ marginBottom: '6px', display: 'block' }}>Quantity</label>
+                    <input
+                        type="number"
                         min="1"
                         value={quantity}
                         onChange={(e) => { setError(null); setQuantity(e.target.value); }}
-                        style={{
-                            width: '100%',
-                            padding: '10px',
-                            backgroundColor: 'var(--bg-color)',
-                            border: '1px solid var(--border-light)',
-                            borderRadius: '4px',
-                            color: 'var(--text-primary)',
-                            outline: 'none'
-                        }}
+                        className="form-input"
                     />
                 </div>
-                
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <button 
+
+                <div className="trade-buttons">
+                    <button
                         onClick={() => handleTrade('BUY')}
                         disabled={loading || !currentPrice}
-                        style={{
-                            padding: '10px 16px',
-                            backgroundColor: 'var(--positive)',
-                            color: '#000',
-                            border: 'none',
-                            borderRadius: '4px',
-                            fontWeight: 600,
-                            cursor: loading ? 'not-allowed' : 'pointer',
-                            opacity: (loading || !currentPrice) ? 0.5 : 1
-                        }}
+                        className="btn-primary trade-buy"
                     >
-                        {loading ? <Loader2 size={18} className="spinner" /> : `BUY $${currentPrice ? (parseInt(quantity || '0') * currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '--'}`}
+                        {loading ? <Loader2 size={16} className="spinner" /> : `BUY $${currentPrice ? fmt(orderTotal) : '--'}`}
                     </button>
-                    
-                    <button 
+
+                    <button
                         onClick={() => handleTrade('SELL')}
                         disabled={loading || !currentPrice || sharesHeld <= 0}
-                        style={{
-                            padding: '10px 16px',
-                            backgroundColor: 'transparent',
-                            color: 'var(--negative)',
-                            border: '1px solid var(--negative)',
-                            borderRadius: '4px',
-                            fontWeight: 600,
-                            cursor: (loading || sharesHeld <= 0) ? 'not-allowed' : 'pointer',
-                            opacity: (loading || !currentPrice || sharesHeld <= 0) ? 0.5 : 1
-                        }}
+                        className="btn-secondary trade-sell"
                     >
                         SELL
                     </button>

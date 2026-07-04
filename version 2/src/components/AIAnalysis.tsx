@@ -103,9 +103,9 @@ export function AIAnalysis({ symbol, name }: AIAnalysisProps) {
     };
 
     return (
-        <div className="ai-analysis-container" style={{ padding: '24px' }}>
-            <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <h3 style={{ margin: 0 }}>Synapse Intelligence</h3>
+        <div className="ai-analysis-container">
+            <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 600 }}>Synapse Intelligence</h3>
                 {user && (
                     <div style={{ display: 'flex', gap: '8px', backgroundColor: 'var(--bg-color)', padding: '4px', borderRadius: '6px' }}>
                         <button 

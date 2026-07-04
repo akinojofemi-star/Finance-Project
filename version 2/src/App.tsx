@@ -154,8 +154,12 @@ function App() {
             {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
 
             <div className="dashboard-layout">
-                <Sidebar 
-                    watchlist={state.watchlist} 
+                <div
+                    className={`mobile-backdrop ${isMobileMenuOpen ? 'visible' : ''}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <Sidebar
+                    watchlist={state.watchlist}
                     companyNames={state.companyNames}
                     activeTicker={state.activeTicker}
                     onSelectTicker={(t) => { handleSelectTicker(t); setIsMobileMenuOpen(false); }}
