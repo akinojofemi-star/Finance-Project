@@ -1,29 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { searchSymbol } from '../services/api';
-import { Search, Loader2, Sun, Moon, LogOut, LayoutDashboard, Briefcase, Settings, Menu } from 'lucide-react';
+import { Search, Loader2, LogOut, LayoutDashboard, Briefcase, Settings, Menu, Palette, Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { THEMES, type ThemeId } from '../themes';
 
 interface TopNavProps {
     onAddSymbol: (symbol: string, description: string) => void;
-    theme: 'dark' | 'light';
-    onToggleTheme: () => void;
+    theme: ThemeId;
+    onSelectTheme: (theme: ThemeId) => void;
     portfolioBalance?: number | null;
     currentView?: 'dashboard' | 'portfolio' | 'settings';
     onNavigate?: (view: 'dashboard' | 'portfolio' | 'settings') => void;
     onToggleMobileMenu?: () => void;
 }
 
-export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, currentView = 'dashboard', onNavigate, onToggleMobileMenu }: TopNavProps) {
+export function TopNav({ onAddSymbol, theme, onSelectTheme, portfolioBalance, currentView = 'dashboard', onNavigate, onToggleMobileMenu }: TopNavProps) {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
+    const [themeOpen, setThemeOpen] = useState(false);
+    const themeRef = useRef<HTMLDivElement>(null);
     const { user, signOut } = useAuth();
+
+    useEffect(() => {
+        if (!themeOpen) return;
+        const handler = (e: MouseEvent) => {
+            if (themeRef.current && !themeRef.current.contains(e.target as Node)) {
+                setThemeOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [themeOpen]);
 
     const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && query.trim()) {
             setLoading(true);
             const res = await searchSymbol(query.trim());
             setLoading(false);
-            
+
             if (res && res.symbol) {
                 onAddSymbol(res.symbol, res.description);
                 setQuery('');
@@ -32,6 +46,9 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
             }
         }
     };
+
+    const activeTheme = THEMES.find(t => t.id === theme) || THEMES[0];
+    const ActiveIcon = activeTheme.icon;
 
     return (
         <header className="top-nav">
@@ -43,16 +60,16 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                 )}
                 <span className="logo-text">SYNAPSE</span>
             </div>
-            
+
             {onNavigate && user && (
                 <nav className="nav-tabs">
-                    <button 
+                    <button
                         onClick={() => onNavigate('dashboard')}
                         className={`nav-btn ${currentView === 'dashboard' ? 'active' : ''}`}
                     >
                         <LayoutDashboard size={14} /> Research
                     </button>
-                    <button 
+                    <button
                         onClick={() => onNavigate('portfolio')}
                         className={`nav-btn ${currentView === 'portfolio' ? 'active' : ''}`}
                     >
@@ -60,13 +77,13 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                     </button>
                 </nav>
             )}
-            
+
             <div className="search-area">
                 <div className="search-box">
                     <Search className="search-icon" size={20} />
-                    <input 
-                        type="text" 
-                        placeholder="Search markets..." 
+                    <input
+                        type="text"
+                        placeholder="Search markets..."
                         value={query}
                         onChange={e => setQuery(e.target.value)}
                         onKeyDown={handleSearch}
@@ -74,7 +91,7 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                     {loading && <Loader2 className="spinner" size={20} />}
                 </div>
             </div>
-            
+
             <div className="user-actions">
                 {user && (
                     <>
@@ -96,9 +113,47 @@ export function TopNav({ onAddSymbol, theme, onToggleTheme, portfolioBalance, cu
                         </button>
                     </>
                 )}
-                <button className="icon-btn theme-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
-                    {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-                </button>
+
+                <div className="theme-picker" ref={themeRef}>
+                    <button
+                        className="icon-btn theme-btn"
+                        onClick={() => setThemeOpen(o => !o)}
+                        title={`Theme: ${activeTheme.label}`}
+                        aria-haspopup="menu"
+                        aria-expanded={themeOpen}
+                    >
+                        <ActiveIcon size={20} />
+                    </button>
+
+                    {themeOpen && (
+                        <div className="theme-menu" role="menu">
+                            <div className="theme-menu-header">
+                                <Palette size={14} />
+                                <span>Theme</span>
+                            </div>
+                            {THEMES.map(t => {
+                                const Icon = t.icon;
+                                const isActive = t.id === theme;
+                                return (
+                                    <button
+                                        key={t.id}
+                                        className={`theme-option ${isActive ? 'active' : ''}`}
+                                        onClick={() => { onSelectTheme(t.id); setThemeOpen(false); }}
+                                        role="menuitem"
+                                    >
+                                        <span className="theme-swatch" style={{ backgroundColor: t.swatch }} />
+                                        <Icon size={16} className="theme-option-icon" />
+                                        <span className="theme-option-label">
+                                            <span className="theme-option-name">{t.label}</span>
+                                            <span className="theme-option-desc">{t.description}</span>
+                                        </span>
+                                        {isActive && <Check size={14} className="theme-check" />}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             </div>
         </header>
     );

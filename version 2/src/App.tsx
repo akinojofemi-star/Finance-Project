@@ -9,6 +9,7 @@ import { LoginModal } from './components/LoginModal';
 import { useAuth } from './contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 import { supabase } from './lib/supabase';
+import { THEMES, applyThemeToBody, type ThemeId } from './themes';
 
 export interface AppState {
     watchlist: string[];
@@ -41,8 +42,9 @@ function App() {
         };
     });
 
-    const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-        return (localStorage.getItem('femiFinanceTheme') as 'dark' | 'light') || 'dark';
+    const [theme, setTheme] = useState<ThemeId>(() => {
+        const saved = localStorage.getItem('femiFinanceTheme') as ThemeId | null;
+        return saved && THEMES.some(t => t.id === saved) ? saved : 'dark';
     });
 
     useEffect(() => {
@@ -100,14 +102,8 @@ function App() {
 
     useEffect(() => {
         localStorage.setItem('femiFinanceTheme', theme);
-        if (theme === 'light') {
-            document.body.classList.add('light-theme');
-        } else {
-            document.body.classList.remove('light-theme');
-        }
+        applyThemeToBody(theme);
     }, [theme]);
-
-    const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
     const handleSelectTicker = (symbol: string) => {
         setState(s => ({ ...s, activeTicker: symbol }));
@@ -141,11 +137,11 @@ function App() {
 
     return (
         <div className="app-root">
-            <TopNav 
-                onAddSymbol={handleAddSymbol} 
-                theme={theme} 
-                onToggleTheme={toggleTheme} 
-                portfolioBalance={portfolioBalance} 
+            <TopNav
+                onAddSymbol={handleAddSymbol}
+                theme={theme}
+                onSelectTheme={setTheme}
+                portfolioBalance={portfolioBalance}
                 currentView={currentView}
                 onNavigate={(v) => { setCurrentView(v); setIsMobileMenuOpen(false); }}
                 onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -182,7 +178,7 @@ function App() {
                 )}
 
                 {currentView === 'settings' && (
-                    <SettingsView theme={theme} onToggleTheme={toggleTheme} />
+                    <SettingsView theme={theme} onSelectTheme={setTheme} />
                 )}
             </div>
         </div>

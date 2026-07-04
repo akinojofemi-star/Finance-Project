@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { Loader2, Moon, Sun, Lock, User, AlertTriangle } from 'lucide-react';
+import { Loader2, Lock, User, AlertTriangle, Check } from 'lucide-react';
+import { THEMES, type ThemeId } from '../themes';
 
 interface SettingsViewProps {
-    theme: 'dark' | 'light';
-    onToggleTheme: () => void;
+    theme: ThemeId;
+    onSelectTheme: (theme: ThemeId) => void;
 }
 
-export function SettingsView({ theme, onToggleTheme }: SettingsViewProps) {
+export function SettingsView({ theme, onSelectTheme }: SettingsViewProps) {
     const { user } = useAuth();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -146,14 +147,29 @@ export function SettingsView({ theme, onToggleTheme }: SettingsViewProps) {
                 {/* Appearance */}
                 <div className="card-panel">
                     <h3 className="section-heading">APPEARANCE</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                        <div style={{ minWidth: 0 }}>
-                            <div style={{ fontWeight: 600, marginBottom: '4px' }}>Theme Preference</div>
-                            <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Toggle between light and dark mode</div>
-                        </div>
-                        <button onClick={onToggleTheme} className="btn-secondary">
-                            {theme === 'dark' ? <><Sun size={14} /> Light Mode</> : <><Moon size={14} /> Dark Mode</>}
-                        </button>
+                    <div style={{ fontWeight: 600, marginBottom: '4px' }}>Theme</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                        Pick a palette. Your choice is saved to this browser.
+                    </div>
+                    <div className="theme-grid">
+                        {THEMES.map(t => {
+                            const Icon = t.icon;
+                            const isActive = t.id === theme;
+                            return (
+                                <button
+                                    key={t.id}
+                                    onClick={() => onSelectTheme(t.id)}
+                                    className={`theme-tile ${isActive ? 'active' : ''}`}
+                                >
+                                    <span className="theme-tile-swatch" style={{ backgroundColor: t.swatch }}>
+                                        <Icon size={18} className="theme-tile-icon" />
+                                        {isActive && <Check size={14} className="theme-tile-check" />}
+                                    </span>
+                                    <span className="theme-tile-name">{t.label}</span>
+                                    <span className="theme-tile-desc">{t.description}</span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
