@@ -41,11 +41,11 @@ export function CompanyStats({ symbol }: CompanyStatsProps) {
                 <div className="stats-loading">Loading data...</div>
             ) : (
                 <div className="stats-grid">
-                    <StatItem label="Market Cap" value={profile?.marketCapitalization ? `$${formatNumber(profile.marketCapitalization)}` : '--'} />
-                    <StatItem label="P/E Ratio" value={metrics?.peExclExtraTTM?.toFixed(2) || '--'} />
-                    <StatItem label="52 Week High" value={metrics?.['52WeekHigh'] ? `$${metrics['52WeekHigh'].toFixed(2)}` : '--'} />
-                    <StatItem label="52 Week Low" value={metrics?.['52WeekLow'] ? `$${metrics['52WeekLow'].toFixed(2)}` : '--'} />
-                    <StatItem label="Beta" value={metrics?.beta?.toFixed(2) || '--'} />
+                    <StatItem label="Market Cap" hint="Total value of the company" value={profile?.marketCapitalization ? `$${formatNumber(profile.marketCapitalization)}` : '--'} />
+                    <StatItem label="P/E Ratio" hint="Share price vs. yearly earnings" value={metrics?.peExclExtraTTM?.toFixed(2) || '--'} />
+                    <StatItem label="52 Week High" hint="Highest price in the past year" value={metrics?.['52WeekHigh'] ? `$${metrics['52WeekHigh'].toFixed(2)}` : '--'} />
+                    <StatItem label="52 Week Low" hint="Lowest price in the past year" value={metrics?.['52WeekLow'] ? `$${metrics['52WeekLow'].toFixed(2)}` : '--'} />
+                    <StatItem label="Beta" hint="How much it swings vs. the market" value={metrics?.beta?.toFixed(2) || '--'} />
                     <StatItem label="Industry" value={profile?.finnhubIndustry || '--'} />
                     <StatItem label="Website" value={profile?.weburl ? <a href={profile.weburl} target="_blank" rel="noreferrer" className="stats-link">Link</a> : '--'} />
                 </div>
@@ -54,11 +54,12 @@ export function CompanyStats({ symbol }: CompanyStatsProps) {
     );
 }
 
-function StatItem({ label, value }: { label: string, value: React.ReactNode }) {
+function StatItem({ label, value, hint }: { label: string, value: React.ReactNode, hint?: string }) {
     return (
         <div className="stat-item">
             <div className="stat-label">{label}</div>
             <div className="stat-value">{value}</div>
+            {hint && <div className="stat-hint">{hint}</div>}
         </div>
     );
 }

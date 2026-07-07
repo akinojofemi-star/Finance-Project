@@ -6,6 +6,7 @@ import { Loader2, TrendingUp, TrendingDown, DollarSign, Briefcase } from 'lucide
 
 interface PortfolioViewProps {
     portfolioBalance: number | null;
+    onSignIn?: () => void;
 }
 
 interface Trade {
@@ -24,7 +25,7 @@ interface Holding {
     currentPrice: number;
 }
 
-export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
+export function PortfolioView({ portfolioBalance, onSignIn }: PortfolioViewProps) {
     const { user } = useAuth();
     const [trades, setTrades] = useState<Trade[]>([]);
     const [holdings, setHoldings] = useState<Holding[]>([]);
@@ -84,8 +85,15 @@ export function PortfolioView({ portfolioBalance }: PortfolioViewProps) {
 
     if (!user) {
         return (
-            <div className="page-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="empty-state">Please log in to view portfolio.</div>
+            <div className="page-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="empty-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                    <div>Your portfolio lives here — practice trading with $100,000 in virtual cash.</div>
+                    {onSignIn && (
+                        <button className="btn-primary" onClick={onSignIn}>
+                            Sign in to get started
+                        </button>
+                    )}
+                </div>
             </div>
         );
     }

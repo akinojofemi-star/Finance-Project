@@ -129,6 +129,35 @@
     color: var(--text-secondary);
 }
 
+.search-box.has-error {
+    border-color: var(--negative);
+}
+
+.search-error {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--negative);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--negative);
+    font-size: 12px;
+    line-height: 1.4;
+    z-index: 1100;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.15s ease-out;
+}
+
+.sign-in-btn {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+}
+.sign-in-btn:hover {
+    background-color: var(--card-bg) !important;
+}
+
 .spinner {
     animation: spin 1s linear infinite;
     color: var(--accent);
@@ -625,6 +654,12 @@ body.theme-light .icon-btn:hover {
     word-break: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
+}
+
+.stat-hint {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    line-height: 1.3;
 }
 
 .stats-link {
@@ -1502,18 +1537,17 @@ body.theme-sepia .theme-tile-icon {
         pointer-events: auto;
     }
 
-    /* Main + Right sidebar stack vertically */
+    /* AI panel moves to its own bottom-nav tab; hide the stacked copy */
     .dashboard-content {
         flex-direction: column;
     }
     .right-sidebar {
-        width: 100%;
-        max-width: 100%;
-        border-left: none;
-        border-top: 1px solid var(--border-light);
-        position: static;
-        height: auto;
-        overflow-y: visible;
+        display: none;
+    }
+
+    /* Top nav tabs replaced by the bottom tab bar */
+    .nav-tabs {
+        display: none;
     }
 
     .main-content {
@@ -1523,6 +1557,11 @@ body.theme-sepia .theme-tile-icon {
     /* Portfolio: single column */
     .portfolio-columns {
         grid-template-columns: 1fr;
+    }
+
+    /* Reserve space for the fixed bottom tab bar */
+    .app-root {
+        padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px));
     }
 }
 
@@ -1550,21 +1589,6 @@ body.theme-sepia .theme-tile-icon {
         order: 2;
         margin-left: auto;
         gap: 4px;
-    }
-
-    .nav-tabs {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        margin-top: 4px;
-        gap: 4px;
-    }
-
-    .nav-btn {
-        flex: 1;
-        justify-content: center;
-        font-size: 12px;
-        padding: 8px 10px;
     }
 
     .search-area {
@@ -1743,6 +1767,75 @@ body.theme-sepia .theme-tile-icon {
     .btn-danger {
         padding: 10px 14px;
         font-size: 13px;
+    }
+}
+
+/* --- BOTTOM TAB BAR (mobile & tablet only) --- */
+.bottom-nav {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--sidebar-bg);
+        border-top: 1px solid var(--border-light);
+        padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)) 8px;
+        z-index: 1500;
+    }
+
+    .bottom-nav-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 10px;
+        font-weight: 500;
+        font-family: inherit;
+        padding: 6px 4px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: color 0.15s;
+    }
+
+    .bottom-nav-btn.active {
+        color: var(--accent);
+    }
+}
+
+/* --- AI FULL-PAGE VIEW (bottom-nav tab) --- */
+.ai-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    background-color: var(--bg-color);
+}
+
+.ai-page .ai-analysis-container {
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1;
+}
+
+.ai-page .ai-chat-input-area {
+    position: sticky;
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+    .ai-page .ai-chat-input-area {
+        bottom: 16px;
     }
 }
 

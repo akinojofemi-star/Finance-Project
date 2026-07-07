@@ -7,9 +7,10 @@ import { THEMES, type ThemeId } from '../themes';
 interface SettingsViewProps {
     theme: ThemeId;
     onSelectTheme: (theme: ThemeId) => void;
+    onSignIn?: () => void;
 }
 
-export function SettingsView({ theme, onSelectTheme }: SettingsViewProps) {
+export function SettingsView({ theme, onSelectTheme, onSignIn }: SettingsViewProps) {
     const { user } = useAuth();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -82,10 +83,54 @@ export function SettingsView({ theme, onSelectTheme }: SettingsViewProps) {
         }
     };
 
+    const appearanceCard = (
+        <div className="card-panel">
+            <h3 className="section-heading">APPEARANCE</h3>
+            <div style={{ fontWeight: 600, marginBottom: '4px' }}>Theme</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                Pick a palette. Your choice is saved to this browser.
+            </div>
+            <div className="theme-grid">
+                {THEMES.map(t => {
+                    const Icon = t.icon;
+                    const isActive = t.id === theme;
+                    return (
+                        <button
+                            key={t.id}
+                            onClick={() => onSelectTheme(t.id)}
+                            className={`theme-tile ${isActive ? 'active' : ''}`}
+                        >
+                            <span className="theme-tile-swatch" style={{ backgroundColor: t.swatch }}>
+                                <Icon size={18} className="theme-tile-icon" />
+                                {isActive && <Check size={14} className="theme-tile-check" />}
+                            </span>
+                            <span className="theme-tile-name">{t.label}</span>
+                            <span className="theme-tile-desc">{t.description}</span>
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+
     if (!user) {
         return (
-            <div className="page-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="empty-state">Please log in to view settings.</div>
+            <div className="page-container">
+                <div className="page-inner" style={{ maxWidth: '640px' }}>
+                    <h2 className="page-title">Settings</h2>
+                    {appearanceCard}
+                    <div className="card-panel" style={{ textAlign: 'center' }}>
+                        <div style={{ fontWeight: 600, marginBottom: '8px' }}>Want more?</div>
+                        <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                            Create a free account to save your watchlist, practice trading, and update your profile.
+                        </div>
+                        {onSignIn && (
+                            <button className="btn-primary" onClick={onSignIn}>
+                                Sign in or create account
+                            </button>
+                        )}
+                    </div>
+                </div>
             </div>
         );
     }
@@ -145,33 +190,7 @@ export function SettingsView({ theme, onSelectTheme }: SettingsViewProps) {
                 </div>
 
                 {/* Appearance */}
-                <div className="card-panel">
-                    <h3 className="section-heading">APPEARANCE</h3>
-                    <div style={{ fontWeight: 600, marginBottom: '4px' }}>Theme</div>
-                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                        Pick a palette. Your choice is saved to this browser.
-                    </div>
-                    <div className="theme-grid">
-                        {THEMES.map(t => {
-                            const Icon = t.icon;
-                            const isActive = t.id === theme;
-                            return (
-                                <button
-                                    key={t.id}
-                                    onClick={() => onSelectTheme(t.id)}
-                                    className={`theme-tile ${isActive ? 'active' : ''}`}
-                                >
-                                    <span className="theme-tile-swatch" style={{ backgroundColor: t.swatch }}>
-                                        <Icon size={18} className="theme-tile-icon" />
-                                        {isActive && <Check size={14} className="theme-tile-check" />}
-                                    </span>
-                                    <span className="theme-tile-name">{t.label}</span>
-                                    <span className="theme-tile-desc">{t.description}</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
+                {appearanceCard}
 
                 {/* Security */}
                 <div className="card-panel">

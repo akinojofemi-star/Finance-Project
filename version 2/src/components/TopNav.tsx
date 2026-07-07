@@ -1,40 +1,58 @@
 import { useEffect, useRef, useState } from 'react';
 import { searchSymbol } from '../services/api';
-import { Search, Loader2, LogOut, LayoutDashboard, Briefcase, Settings, Menu, Palette, Check } from 'lucide-react';
+import { Search, Loader2, LogOut, LayoutDashboard, Briefcase, Settings, Menu, Palette, Check, LogIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { THEMES, type ThemeId } from '../themes';
+import type { AppView } from '../App';
 
 interface TopNavProps {
     onAddSymbol: (symbol: string, description: string) => void;
     theme: ThemeId;
     onSelectTheme: (theme: ThemeId) => void;
     portfolioBalance?: number | null;
-    currentView?: 'dashboard' | 'portfolio' | 'settings';
-    onNavigate?: (view: 'dashboard' | 'portfolio' | 'settings') => void;
+    currentView?: AppView;
+    onNavigate?: (view: AppView) => void;
     onToggleMobileMenu?: () => void;
+    onSignIn?: () => void;
 }
 
-export function TopNav({ onAddSymbol, theme, onSelectTheme, portfolioBalance, currentView = 'dashboard', onNavigate, onToggleMobileMenu }: TopNavProps) {
+export function TopNav({ onAddSymbol, theme, onSelectTheme, portfolioBalance, currentView = 'dashboard', onNavigate, onToggleMobileMenu, onSignIn }: TopNavProps) {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
+    const [searchError, setSearchError] = useState<string | null>(null);
     const [themeOpen, setThemeOpen] = useState(false);
     const themeRef = useRef<HTMLDivElement>(null);
     const { user, signOut } = useAuth();
 
     useEffect(() => {
         if (!themeOpen) return;
-        const handler = (e: MouseEvent) => {
+        const clickHandler = (e: MouseEvent) => {
             if (themeRef.current && !themeRef.current.contains(e.target as Node)) {
                 setThemeOpen(false);
             }
         };
-        document.addEventListener('mousedown', handler);
-        return () => document.removeEventListener('mousedown', handler);
+        const keyHandler = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setThemeOpen(false);
+        };
+        document.addEventListener('mousedown', clickHandler);
+        document.addEventListener('keydown', keyHandler);
+        return () => {
+            document.removeEventListener('mousedown', clickHandler);
+            document.removeEventListener('keydown', keyHandler);
+        };
     }, [themeOpen]);
+
+    // Auto-dismiss search errors after a few seconds
+    useEffect(() => {
+        if (!searchError) return;
+        const t = setTimeout(() => setSearchError(null), 4000);
+        return () => clearTimeout(t);
+    }, [searchError]);
 
     const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && query.trim()) {
             setLoading(true);
+            setSearchError(null);
             const res = await searchSymbol(query.trim());
             setLoading(false);
 
@@ -42,7 +60,7 @@ export function TopNav({ onAddSymbol, theme, onSelectTheme, portfolioBalance, cu
                 onAddSymbol(res.symbol, res.description);
                 setQuery('');
             } else {
-                alert('Could not find symbol on Finnhub standard tier.');
+                setSearchError(`No match found for "${query.trim()}" — try a ticker like NVDA or TSLA.`);
             }
         }
     };
@@ -79,25 +97,33 @@ export function TopNav({ onAddSymbol, theme, onSelectTheme, portfolioBalance, cu
             )}
 
             <div className="search-area">
-                <div className="search-box">
+                <div className={`search-box ${searchError ? 'has-error' : ''}`}>
                     <Search className="search-icon" size={20} />
                     <input
                         type="text"
-                        placeholder="Search markets..."
+                        placeholder="Search a ticker, e.g. NVDA..."
                         value={query}
-                        onChange={e => setQuery(e.target.value)}
+                        onChange={e => { setQuery(e.target.value); setSearchError(null); }}
                         onKeyDown={handleSearch}
                     />
                     {loading && <Loader2 className="spinner" size={20} />}
+                    {searchError && (
+                        <div className="search-error" role="alert">{searchError}</div>
+                    )}
                 </div>
             </div>
 
             <div className="user-actions">
+                {!user && onSignIn && (
+                    <button className="nav-btn sign-in-btn" onClick={onSignIn}>
+                        <LogIn size={14} /> Sign In
+                    </button>
+                )}
                 {user && (
                     <>
                         {portfolioBalance !== null && portfolioBalance !== undefined && (
-                            <div className="buying-power-badge hide-on-mobile">
-                                ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BP
+                            <div className="buying-power-badge hide-on-mobile" title="Virtual cash available for practice trading">
+                                ${portfolioBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Buying Power
                             </div>
                         )}
                         <span className="hide-on-mobile user-email">

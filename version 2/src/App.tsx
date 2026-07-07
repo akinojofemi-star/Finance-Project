@@ -6,10 +6,14 @@ import { Dashboard } from './components/Dashboard';
 import { PortfolioView } from './components/PortfolioView';
 import { SettingsView } from './components/SettingsView';
 import { LoginModal } from './components/LoginModal';
+import { AIAnalysis } from './components/AIAnalysis';
+import { BottomNav } from './components/BottomNav';
 import { useAuth } from './contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 import { supabase } from './lib/supabase';
 import { THEMES, applyThemeToBody, type ThemeId } from './themes';
+
+export type AppView = 'dashboard' | 'ai' | 'portfolio' | 'settings';
 
 export interface AppState {
     watchlist: string[];
@@ -124,8 +128,14 @@ function App() {
     };
 
     const [isGuest, setIsGuest] = useState(false);
-    const [currentView, setCurrentView] = useState<'dashboard' | 'portfolio' | 'settings'>('dashboard');
+    const [currentView, setCurrentView] = useState<AppView>('dashboard');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // Lock body scroll while the mobile drawer is open
+    useEffect(() => {
+        document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [isMobileMenuOpen]);
 
     if (isLoading) {
         return (
@@ -145,6 +155,7 @@ function App() {
                 currentView={currentView}
                 onNavigate={(v) => { setCurrentView(v); setIsMobileMenuOpen(false); }}
                 onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onSignIn={() => setIsGuest(false)}
             />
             
             {!user && !isGuest && <LoginModal onGuestAccess={() => setIsGuest(true)} />}
@@ -173,14 +184,32 @@ function App() {
                     />
                 )}
 
+                {currentView === 'ai' && (
+                    <div className="ai-page">
+                        {state.activeTicker ? (
+                            <AIAnalysis
+                                symbol={state.activeTicker}
+                                name={state.companyNames[state.activeTicker] || state.activeTicker}
+                            />
+                        ) : (
+                            <div className="empty-state">Pick a stock from your watchlist to start chatting.</div>
+                        )}
+                    </div>
+                )}
+
                 {currentView === 'portfolio' && (
-                    <PortfolioView portfolioBalance={portfolioBalance} />
+                    <PortfolioView portfolioBalance={portfolioBalance} onSignIn={() => setIsGuest(false)} />
                 )}
 
                 {currentView === 'settings' && (
-                    <SettingsView theme={theme} onSelectTheme={setTheme} />
+                    <SettingsView theme={theme} onSelectTheme={setTheme} onSignIn={() => setIsGuest(false)} />
                 )}
             </div>
+
+            <BottomNav
+                currentView={currentView}
+                onNavigate={(v) => { setCurrentView(v); setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}
+            />
         </div>
     );
 }

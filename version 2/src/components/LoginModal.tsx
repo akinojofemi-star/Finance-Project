@@ -8,6 +8,7 @@ interface LoginModalProps {
 
 export function LoginModal({ onGuestAccess }: LoginModalProps) {
   const [view, setView] = useState<'options' | 'login' | 'signup'>('options');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,12 +25,21 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       } else {
+        if (!fullName.trim()) {
+          setError('Please enter your name.');
+          setLoading(false);
+          return;
+        }
         if (password !== confirmPassword) {
           setError('Passwords do not match.');
           setLoading(false);
           return;
         }
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { full_name: fullName.trim() } }
+        });
         if (error) throw error;
         setError('Registration successful! Please check your email to verify your account before logging in.');
         setView('login');
@@ -108,9 +118,12 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
         ) : (
           <>
             <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-              <h3 style={{ color: 'var(--text-primary)', margin: 0, fontSize: '15px', letterSpacing: '0.5px' }}>
-                {view === 'login' ? 'TERMINAL LOGIN' : 'REQUEST ACCOUNT'}
+              <h3 style={{ color: 'var(--text-primary)', margin: 0, fontSize: '16px' }}>
+                {view === 'login' ? 'Welcome back' : 'Create your account'}
               </h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '6px 0 0 0' }}>
+                {view === 'login' ? 'Log in to pick up where you left off.' : 'Free to join — track markets and practice trading.'}
+              </p>
             </div>
 
             {error && (
@@ -128,6 +141,20 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
             )}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {view === 'signup' && (
+                <div className="form-field">
+                  <label className="form-label">Your Name</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="What should we call you?"
+                    autoComplete="name"
+                    required
+                  />
+                </div>
+              )}
               <div className="form-field">
                 <label className="form-label">Email Address</label>
                 <input
@@ -168,7 +195,7 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
                 className="btn-primary"
                 style={{ marginTop: '8px', padding: '14px', fontSize: '15px', width: '100%' }}
               >
-                {loading ? 'Processing...' : (view === 'login' ? 'Authenticate' : 'Initialize')}
+                {loading ? 'One moment...' : (view === 'login' ? 'Log In' : 'Create Account')}
               </button>
             </form>
 
@@ -186,7 +213,7 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
                   fontFamily: 'inherit'
                 }}
               >
-                {view === 'login' ? 'Need terminal access? Request an account' : 'Already have credentials? Authenticate here'}
+                {view === 'login' ? "New here? Create a free account" : 'Already have an account? Log in'}
               </button>
 
               <button

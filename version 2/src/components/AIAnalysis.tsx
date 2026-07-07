@@ -102,6 +102,13 @@ export function AIAnalysis({ symbol, name }: AIAnalysisProps) {
         }
     };
 
+    // Greet logged-in users by first name; guests get a neutral greeting
+    const fullName = user?.user_metadata?.full_name as string | undefined;
+    const firstName = fullName?.trim().split(/\s+/)[0];
+    const greeting = firstName
+        ? `Hi ${firstName}, ask any financial question`
+        : 'Ask any financial question';
+
     return (
         <div className="ai-analysis-container">
             <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
@@ -147,7 +154,7 @@ export function AIAnalysis({ symbol, name }: AIAnalysisProps) {
                     <div style={{ flexGrow: 1, overflowY: 'auto', paddingBottom: '16px', display: 'flex', flexDirection: 'column' }}>
                         {messages.length === 0 && !loading && !error && (
                             <>
-                                <h3 className="ai-chat-header">Hi Femi, ask any financial question</h3>
+                                <h3 className="ai-chat-header">{greeting}</h3>
                                 <div className="ai-quick-prompts">
                                     <button className="ai-quick-btn" onClick={() => handleAnalyze(`What's going on with ${symbol} today?`)}>
                                         <Sparkles size={16} />

@@ -72,7 +72,7 @@ export function StockChart({ symbol }: StockChartProps) {
                             onChange={(e) => setShowSMA(e.target.checked)}
                             style={{ accentColor: 'var(--accent)' }}
                         />
-                        Show 20-Period SMA
+                        Show trend line (20-day average)
                     </label>
                 </div>
                 <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
