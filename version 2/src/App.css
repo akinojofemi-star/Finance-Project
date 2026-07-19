@@ -337,6 +337,20 @@ body.theme-light .icon-btn:hover {
     text-align: left;
 }
 
+/* In grid view each card is ~half width, so let the name truncate
+   to the card instead of the fixed 140px used in list view. */
+.list-container.grid-view .item-left {
+    width: 100%;
+}
+
+.list-container.grid-view .item-ticker,
+.list-container.grid-view .item-name {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .item-left {
     display: flex;
     flex-direction: column;
