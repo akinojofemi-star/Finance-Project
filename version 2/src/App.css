@@ -276,6 +276,18 @@ body.theme-light .icon-btn:hover {
     align-items: center;
     padding: 8px 0;
     cursor: pointer;
+    width: 100%;
+    background: none;
+    border: none;
+    font-family: inherit;
+    text-align: left;
+    border-radius: 6px;
+    transition: color 0.15s;
+}
+
+.group-header:hover h3,
+.group-header:hover .chevron-toggle {
+    color: var(--text-primary);
 }
 
 .group-header h3 {
@@ -284,6 +296,15 @@ body.theme-light .icon-btn:hover {
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    transition: color 0.15s;
+}
+
+.chevron-toggle {
+    transition: transform 0.2s ease, color 0.15s;
+}
+
+.chevron-toggle.collapsed {
+    transform: rotate(-90deg);
 }
 
 .list-container {

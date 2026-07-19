@@ -14,6 +14,7 @@ interface SidebarProps {
 export function Sidebar({ watchlist, companyNames, activeTicker, onSelectTicker, isMobileOpen }: SidebarProps) {
     const [quotes, setQuotes] = useState<Record<string, Quote>>({});
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+    const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
         const fetchQuotes = async () => {
@@ -51,13 +52,22 @@ export function Sidebar({ watchlist, companyNames, activeTicker, onSelectTicker,
                 </div>
                 
                 <div className="collapsible-group">
-                    <div className="group-header">
+                    <button
+                        className="group-header"
+                        onClick={() => setCollapsed(c => !c)}
+                        aria-expanded={!collapsed}
+                        aria-controls="watchlist-items"
+                        title={collapsed ? 'Show watchlist' : 'Hide watchlist'}
+                    >
                         <h3>Watchlist</h3>
                         <div className="group-actions">
-                            <button className="icon-btn"><ChevronDown size={16} /></button>
+                            <span className={`icon-btn chevron-toggle ${collapsed ? 'collapsed' : ''}`}>
+                                <ChevronDown size={16} />
+                            </span>
                         </div>
-                    </div>
-                    <div className={`list-container ${viewMode === 'grid' ? 'grid-view' : ''}`}>
+                    </button>
+                    {!collapsed && (
+                    <div id="watchlist-items" className={`list-container ${viewMode === 'grid' ? 'grid-view' : ''}`}>
                         {watchlist.map(symbol => {
                             const quote = quotes[symbol];
                             const isPositive = quote && quote.dp >= 0;
@@ -84,6 +94,7 @@ export function Sidebar({ watchlist, companyNames, activeTicker, onSelectTicker,
                             );
                         })}
                     </div>
+                    )}
                 </div>
             </div>
         </aside>
