@@ -55,29 +55,29 @@ export function LoginModal({ onGuestAccess }: LoginModalProps) {
     <div style={{
       position: 'fixed',
       top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.85)',
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       zIndex: 9999,
-      backdropFilter: 'blur(6px)',
+      backdropFilter: 'blur(12px)',
       padding: '16px',
       overflowY: 'auto'
     }}>
       <div style={{
-        backgroundColor: 'var(--card-bg)',
+        backgroundColor: 'var(--bg-primary)',
         border: '1px solid var(--border-light)',
-        borderRadius: '16px',
+        borderRadius: '20px',
         padding: 'clamp(24px, 5vw, 36px)',
         width: '100%',
         maxWidth: '420px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)',
         margin: 'auto'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '28px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '32px' }}>
           <Terminal size={28} color="var(--accent)" />
-          <h2 style={{ color: 'var(--text-primary)', margin: 0, fontSize: 'clamp(18px, 5vw, 22px)', fontWeight: 700, letterSpacing: '-0.5px' }}>
-            SYNAPSE FINANCE
+          <h2 style={{ color: 'var(--text-primary)', margin: 0, fontSize: 'clamp(20px, 5vw, 24px)', fontWeight: 600, letterSpacing: '-0.5px' }}>
+            Synapse
           </h2>
         </div>
 

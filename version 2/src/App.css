@@ -1,5 +1,6 @@
 /* =========================================================
- * SYNAPSE FINANCE — Responsive layout
+ * SYNAPSE FINANCE — Apple iOS-Native Design System
+ * Principles: Native typography, subtle depth, clear hierarchy
  * Breakpoints:
  *   Small mobile:  <= 480px
  *   Mobile:        <= 767px
@@ -7,6 +8,18 @@
  *   Small desktop: 1024px – 1279px
  *   Desktop:       >= 1280px
  * ========================================================= */
+
+:root {
+    /* iOS System Font Stack — SF Pro Display / Text */
+    --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Inconsolata', monospace;
+}
+
+* {
+    font-family: var(--font-system);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 /* ------- APPLICATION ROOT ------- */
 .app-root {
@@ -16,17 +29,19 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    background: var(--bg-primary);
 }
 
-/* ------- TOP NAV (base = desktop) ------- */
+/* ------- TOP NAV (base = desktop) — iOS-native header style ------- */
 .top-nav {
     display: flex;
     align-items: center;
-    padding: env(safe-area-inset-top, 0px) 24px 0 24px;
-    background-color: var(--bg-color);
+    padding: env(safe-area-inset-top, 0px) 20px 0 20px;
+    background-color: rgba(var(--bg-color-rgb), 0.95);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-light);
     height: calc(64px + env(safe-area-inset-top, 0px));
-    gap: 20px;
+    gap: 16px;
     flex-shrink: 0;
     position: sticky;
     top: 0;
@@ -94,10 +109,11 @@
 .search-box {
     display: flex;
     align-items: center;
-    background-color: var(--search-bg);
+    background-color: var(--bg-secondary);
     border-radius: 10px;
     padding: 0 14px;
     height: 40px;
+    border: 1px solid var(--border-light);
     position: relative;
     border: 1px solid transparent;
     transition: border-color 0.15s, background-color 0.15s;
@@ -211,24 +227,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
-    border-radius: 50%;
-    transition: background-color 0.15s, color 0.15s;
-    min-width: 36px;
-    min-height: 36px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    min-width: 44px;
+    min-height: 44px;
+    /* Apple 44pt touch target */
 }
 
 .icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
 }
-body.theme-light .icon-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+
+.icon-btn:active {
+    transform: scale(0.94);
 }
 
 .icon-btn.active {
-    color: var(--positive);
-    background-color: rgba(52, 199, 89, 0.12);
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
 }
 
 /* ------- LEFT SIDEBAR ------- */
@@ -257,13 +275,14 @@ body.theme-light .icon-btn:hover {
 }
 
 .sidebar-header h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .sidebar-actions, .group-actions {
     display: flex;
-    gap: 4px;
+    gap: 8px;
 }
 
 .collapsible-group {
@@ -319,17 +338,23 @@ body.theme-light .icon-btn:hover {
     align-items: center;
     padding: 12px 12px;
     cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.15s;
+    border-radius: 10px;
+    transition: all 0.2s ease;
     min-width: 0;
 }
 
 .list-item:hover {
-    background-color: var(--card-bg);
+    background-color: var(--bg-secondary);
+}
+
+.list-item:active {
+    transform: scale(0.98);
 }
 
 .list-item.active {
-    background-color: var(--card-bg);
+    background-color: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid var(--accent);
+    padding-left: 9px;
 }
 
 .list-container.grid-view {
@@ -342,11 +367,22 @@ body.theme-light .icon-btn:hover {
 .list-container.grid-view .list-item {
     flex-direction: column;
     align-items: flex-start;
-    padding: 12px;
-    background-color: var(--card-bg);
-    border-radius: 8px;
+    padding: 14px;
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
     border: 1px solid var(--border-light);
     height: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.list-container.grid-view .list-item:hover {
+    border-color: var(--border-light);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.list-container.grid-view .list-item:active {
+    transform: scale(0.96);
 }
 
 .list-container.grid-view .item-right {
@@ -1126,22 +1162,31 @@ body.theme-light .range-btn.active {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.2s ease;
     font-family: inherit;
-    border: 1px solid transparent;
+    border: none;
+    min-height: 48px;
+    /* Apple touch-friendly height */
 }
 
 .btn-primary {
     background-color: var(--accent);
     color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .btn-primary:hover:not(:disabled) {
-    opacity: 0.9;
+    background-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .btn-primary:disabled {
     opacity: 0.5;
@@ -1149,49 +1194,52 @@ body.theme-light .range-btn.active {
 }
 
 .btn-secondary {
-    background-color: transparent;
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
-    border-color: var(--border-light);
+    border: 1px solid var(--border-light);
 }
 .btn-secondary:hover {
-    border-color: var(--accent);
+    background-color: var(--card-bg);
+    border-color: var(--border-light);
 }
 
 .btn-danger {
     background-color: rgba(255, 59, 48, 0.1);
     color: var(--negative);
-    border-color: var(--negative);
 }
 
-/* Form fields */
+/* Form fields — Apple-style spacing and hierarchy */
 .form-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .form-label {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    font-weight: 600;
+    font-weight: 500;
+    letter-spacing: 0;
 }
 
 .form-input {
     width: 100%;
-    padding: 12px 14px;
-    background-color: var(--bg-color);
+    padding: 12px 16px;
+    background-color: var(--bg-secondary);
     border: 1px solid var(--border-light);
-    border-radius: 8px;
+    border-radius: 10px;
     color: var(--text-primary);
-    font-size: 15px;
+    font-size: 16px;
     outline: none;
     font-family: inherit;
-    transition: border-color 0.15s;
+    transition: all 0.2s ease;
+}
+.form-input::placeholder {
+    color: var(--text-tertiary);
 }
 .form-input:focus {
     border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Section headings */
